@@ -4,9 +4,11 @@ import com.mimesa.restaurante.model.CategoriaMenu;
 import com.mimesa.restaurante.model.ProductoMenu;
 import com.mimesa.restaurante.service.CategoriaMenuService;
 import com.mimesa.restaurante.service.ProductoMenuService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,8 +45,17 @@ public class ProductoMenuController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute ProductoMenu producto) {
+    public String guardar(@Valid @ModelAttribute("producto") ProductoMenu producto,
+                          BindingResult result,
+                          Model model,
+                          RedirectAttributes redirect) {
+        if (result.hasErrors()) {
+            // Se vuelve a cargar la lista de categorías para que el desplegable HTML no aparezca vacío
+            model.addAttribute("categorias", categoriaService.listarTodos());
+            return "productos/formulario";
+        }
         productoService.guardar(producto);
+        redirect.addFlashAttribute("exito", "Producto guardado correctamente");
         return "redirect:/productos";
     }
 
