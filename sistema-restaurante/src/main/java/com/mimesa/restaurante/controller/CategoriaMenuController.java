@@ -2,10 +2,12 @@ package com.mimesa.restaurante.controller;
 
 import com.mimesa.restaurante.model.CategoriaMenu;
 import com.mimesa.restaurante.service.CategoriaMenuService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,14 @@ public class CategoriaMenuController {
     }
 
     @PostMapping("/categorias/guardar")
-    public String guardar(@ModelAttribute("categoria") CategoriaMenu categoria) {
+    public String guardar(@Valid @ModelAttribute("categoria") CategoriaMenu categoria,
+                          BindingResult result,
+                          RedirectAttributes redirect) {
+        if (result.hasErrors()) {
+            return "categorias/formulario";
+        }
         categoriaService.guardar(categoria);
+        redirect.addFlashAttribute("exito", "Categoría guardada correctamente");
         return "redirect:/categorias";
     }
 
@@ -50,9 +58,12 @@ public class CategoriaMenuController {
     public String eliminar(@PathVariable Integer id, RedirectAttributes redirect) {
         try {
             categoriaService.eliminar(id);
+            redirect.addFlashAttribute("exito", "Categoría eliminada correctamente");
         } catch (DataIntegrityViolationException e) {
             redirect.addFlashAttribute("error",
                     "No se puede eliminar: la categoría tiene productos asociados.");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Ocurrió un error al intentar eliminar la categoría.");
         }
         return "redirect:/categorias";
     }

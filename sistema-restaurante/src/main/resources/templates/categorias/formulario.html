@@ -14,14 +14,14 @@
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" id="nombre" class="form-control" th:field="*{nombre}"
-                   maxlength="100" required>
+            <input type="text" id="nombre" class="form-control" th:field="*{nombre}" maxlength="100">
+            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
         </div>
 
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción</label>
-            <input type="text" id="descripcion" class="form-control" th:field="*{descripcion}"
-                   maxlength="255">
+            <input type="text" id="descripcion" class="form-control" th:field="*{descripcion}" maxlength="255">
+            <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
