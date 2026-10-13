@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Mesa</title>
+</head>
+<body>
+<section>
+    <h2 class="h3 mb-3" th:text="${mesa.idMesa == null} ? 'Nueva mesa' : 'Editar mesa'">Mesa</h2>
+
+    <form th:action="@{/mesas/guardar}" th:object="${mesa}" method="post">
+        <!-- Si trae id es edicion; si viene vacio es creacion -->
+        <input type="hidden" th:field="*{idMesa}">
+
+        <div class="mb-3">
+            <label for="numero" class="form-label">Número</label>
+            <input type="number" id="numero" class="form-control" th:field="*{numero}" min="1">
+            <div class="text-danger" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="capacidad" class="form-label">Capacidad</label>
+            <input type="number" id="capacidad" class="form-control" th:field="*{capacidad}" min="1">
+            <div class="text-danger" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="loc" class="form-label">Ubicación</label>
+            <input type="text" id="loc" class="form-control" th:field="*{loc}" maxlength="100">
+            <div class="text-danger" th:if="${#fields.hasErrors('loc')}" th:errors="*{loc}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select id="estado" class="form-select" th:field="*{estado.idEstadoMesa}">
+                <option value="">-- Seleccione un estado --</option>
+                <option th:each="e : ${estados}"
+                        th:value="${e.idEstadoMesa}"
+                        th:text="${e.nombre}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/mesas}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</section>
+</body>
+</html>
