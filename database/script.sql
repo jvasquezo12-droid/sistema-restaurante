@@ -103,7 +103,7 @@ CREATE TABLE `detalle_pedido` (
 
 LOCK TABLES `detalle_pedido` WRITE;
 /*!40000 ALTER TABLE `detalle_pedido` DISABLE KEYS */;
-INSERT INTO `detalle_pedido` VALUES (1,1,0.00,'Extra queso',35.00,1,1),(2,2,0.00,NULL,24.00,1,6),(3,1,0.00,'Término medio',85.00,2,4),(4,1,0.00,NULL,60.00,2,5),(5,2,0.00,NULL,90.00,3,3);
+INSERT INTO `detalle_pedido` VALUES (1,1,35.00,'Extra queso',35.00,1,1),(2,2,12.00,NULL,24.00,1,6),(3,1,85.00,'Término medio',85.00,2,4),(4,1,60.00,NULL,60.00,2,5),(5,2,45.00,NULL,90.00,3,3);
 /*!40000 ALTER TABLE `detalle_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +366,7 @@ CREATE TABLE `producto_menu` (
 
 LOCK TABLES `producto_menu` WRITE;
 /*!40000 ALTER TABLE `producto_menu` DISABLE KEYS */;
-INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3),(13,'Raice and Beans','Arroz con frijol, plátano frito, tortilla, y pollo ',25.00,'',1,2);
+INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3);
 /*!40000 ALTER TABLE `producto_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,7 +508,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email` (`email`),
   KEY `fk_usuario_rol` (`idRol`),
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -517,7 +517,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Daniel Marroquín','admin@restaurante.com','hash_admin_123','2026-09-18 21:37:50',1),(2,'Carlos Méndez','carlos.mesero@restaurante.com','hash_mesero_123','2026-09-18 21:37:50',2),(3,'Ana López','ana.cocina@restaurante.com','hash_cocina_123','2026-09-18 21:37:50',3),(4,'María Pérez','maria.perez@gmail.com','hash_cliente_123','2026-09-18 21:37:50',4),(5,'José García','jose.garcia@gmail.com','hash_cliente_456','2026-09-18 21:37:50',4);
+INSERT INTO `usuario` VALUES (1,'Administrador del Sistema','admin@restaurante.com','admin123','2026-09-18 21:37:50',1),(2,'Carlos Daniel Marroquín Oliva','carlos.mesero@restaurante.com','mesero123','2026-09-18 21:37:50',2),(3,'Daniel Alexander González Lázaro','daniel.cocina@restaurante.com','cocina123','2026-09-18 21:37:50',3),(4,'María Pérez','maria.perez@gmail.com','cliente123','2026-09-18 21:37:50',4),(5,'José García','jose.garcia@gmail.com','cliente123','2026-09-18 21:37:50',4),(6,'Donovan André Milián Álvarez','donovan.recepcion@restaurante.com','recepcion123','2026-10-13 22:18:20',5),(7,'Víctor Geovanni Méndez García','victor.cajero@restaurante.com','cajero123','2026-10-13 22:18:20',6);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -530,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-13 20:47:41
+-- Dump completed on 2026-10-14 12:56:56
