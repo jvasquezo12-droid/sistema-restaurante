@@ -29,7 +29,7 @@ CREATE TABLE `categoria_menu` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +56,7 @@ CREATE TABLE `cliente` (
   `loyalty` int NOT NULL DEFAULT '0',
   `idUsuario` int NOT NULL,
   PRIMARY KEY (`idCliente`),
-  KEY `fk_cliente_usuario` (`idUsuario`),
+  UNIQUE KEY `uq_cliente_usuario` (`idUsuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `chk_cliente_loyalty` CHECK ((`loyalty` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -357,7 +357,7 @@ CREATE TABLE `producto_menu` (
   KEY `fk_producto_categoria` (`idCategoria`),
   CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categoria_menu` (`idCategoria`),
   CONSTRAINT `chk_producto_precio` CHECK ((`precio` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `producto_menu` (
 
 LOCK TABLES `producto_menu` WRITE;
 /*!40000 ALTER TABLE `producto_menu` DISABLE KEYS */;
-INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3),(8,'Café','Café americano',10.00,NULL,1,3),(10,'Helado','Dos bolas de helado a elegir',20.00,NULL,1,4),(11,'Papas con Pollo','Papas con pollo con salsa de tomate y mayonesa al gusto',25.00,'',1,1),(12,'Carne asada','Carne de res con arroz y tortillas',30.00,'',1,2);
+INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3),(13,'Raice and Beans','Arroz con frijol, plátano frito, tortilla, y pollo ',25.00,'',1,2);
 /*!40000 ALTER TABLE `producto_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-12 13:15:30
+-- Dump completed on 2026-10-13 20:47:41
