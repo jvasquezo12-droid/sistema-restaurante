@@ -1,7 +1,9 @@
 package com.mimesa.restaurante.repository.proyeccion;
 
+import java.time.LocalDate;
+
 public interface VentaPorFechaProyeccion {
-    String getFecha();
+    LocalDate getFecha();
     Integer getCantidadPedidos();
-    Double getTotalMonto();
+    Double getTotalVentas();
 }
