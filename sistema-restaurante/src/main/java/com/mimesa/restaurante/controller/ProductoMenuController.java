@@ -51,6 +51,9 @@ public class ProductoMenuController {
                           BindingResult result,
                           Model model,
                           RedirectAttributes redirect) {
+        if (producto.getCategoria() == null || producto.getCategoria().getIdCategoria() == null) {
+            result.rejectValue("categoria", "error.categoria", "Debe seleccionar una categoria");
+        }
         if (result.hasErrors()) {
             // Se vuelve a cargar la lista de categorías para que el desplegable HTML no aparezca vacío
             model.addAttribute("categorias", categoriaService.listarTodos());

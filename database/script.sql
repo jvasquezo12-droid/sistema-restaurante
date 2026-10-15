@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `restaurante_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `restaurante_db`;
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
 -- Host: localhost    Database: restaurante_db
@@ -16,13 +18,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Creacion de la base de datos
---
-
-CREATE DATABASE IF NOT EXISTS restaurante_db;
-USE restaurante_db;
-
---
 -- Table structure for table `categoria_menu`
 --
 
@@ -34,7 +29,7 @@ CREATE TABLE `categoria_menu` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +56,7 @@ CREATE TABLE `cliente` (
   `loyalty` int NOT NULL DEFAULT '0',
   `idUsuario` int NOT NULL,
   PRIMARY KEY (`idCliente`),
-  KEY `fk_cliente_usuario` (`idUsuario`),
+  UNIQUE KEY `uq_cliente_usuario` (`idUsuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `chk_cliente_loyalty` CHECK ((`loyalty` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -87,6 +82,7 @@ DROP TABLE IF EXISTS `detalle_pedido`;
 CREATE TABLE `detalle_pedido` (
   `idDetalle` int NOT NULL AUTO_INCREMENT,
   `cantidad` int NOT NULL,
+  `precioUnitario` decimal(10,2) NOT NULL DEFAULT '0.00',
   `notes` varchar(255) DEFAULT NULL,
   `subtotal` decimal(10,2) NOT NULL,
   `idPedido` int NOT NULL,
@@ -107,7 +103,7 @@ CREATE TABLE `detalle_pedido` (
 
 LOCK TABLES `detalle_pedido` WRITE;
 /*!40000 ALTER TABLE `detalle_pedido` DISABLE KEYS */;
-INSERT INTO `detalle_pedido` VALUES (1,1,'Extra queso',35.00,1,1),(2,2,NULL,24.00,1,6),(3,1,'Término medio',85.00,2,4),(4,1,NULL,60.00,2,5),(5,2,NULL,90.00,3,3);
+INSERT INTO `detalle_pedido` VALUES (1,1,35.00,'Extra queso',35.00,1,1),(2,2,12.00,NULL,24.00,1,6),(3,1,85.00,'Término medio',85.00,2,4),(4,1,60.00,NULL,60.00,2,5),(5,2,45.00,NULL,90.00,3,3);
 /*!40000 ALTER TABLE `detalle_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,6 +282,7 @@ CREATE TABLE `pago` (
   `fPago` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idPedido` int NOT NULL,
   `idFormaPago` int NOT NULL,
+  `referencia` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idPago`),
   KEY `fk_pago_pedido` (`idPedido`),
   KEY `fk_pago_forma` (`idFormaPago`),
@@ -301,7 +298,7 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (1,59.00,'2026-09-18 21:37:50',1,1),(2,145.00,'2026-09-18 21:37:50',2,2);
+INSERT INTO `pago` VALUES (1,59.00,'2026-09-18 21:37:50',1,1,NULL),(2,145.00,'2026-09-18 21:37:50',2,2,NULL);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,6 +317,7 @@ CREATE TABLE `pedido` (
   `idMesa` int NOT NULL,
   `idUsuario` int NOT NULL,
   `idEstadoPedido` int NOT NULL,
+  `motivoCancelacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idPedido`),
   KEY `fk_pedido_mesa` (`idMesa`),
   KEY `fk_pedido_usuario` (`idUsuario`),
@@ -336,7 +334,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (1,'2026-09-18 21:37:50',NULL,'Sin cebolla en los nachos',2,2,3),(2,'2026-09-18 21:37:50',NULL,'Cliente frecuente, mesa VIP',5,2,2),(3,'2026-09-18 21:37:50',NULL,'Para llevar',3,2,1);
+INSERT INTO `pedido` VALUES (1,'2026-09-18 21:37:50',NULL,'Sin cebolla en los nachos',2,2,3,NULL),(2,'2026-09-18 21:37:50',NULL,'Cliente frecuente, mesa VIP',5,2,2,NULL),(3,'2026-09-18 21:37:50',NULL,'Para llevar',3,2,1,NULL);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,12 +351,13 @@ CREATE TABLE `producto_menu` (
   `descripcion` varchar(255) DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
   `img` varchar(500) DEFAULT NULL,
+  `disponible` tinyint(1) NOT NULL DEFAULT '1',
   `idCategoria` int NOT NULL,
   PRIMARY KEY (`idProducto`),
   KEY `fk_producto_categoria` (`idCategoria`),
   CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categoria_menu` (`idCategoria`),
   CONSTRAINT `chk_producto_precio` CHECK ((`precio` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,7 +366,7 @@ CREATE TABLE `producto_menu` (
 
 LOCK TABLES `producto_menu` WRITE;
 /*!40000 ALTER TABLE `producto_menu` DISABLE KEYS */;
-INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1),(2,'Alitas BBQ','Alitas de pollo bañadas en salsa BBQ',45.00,NULL,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,2),(4,'Lomito al carbón','Lomito de res a la parrilla',85.00,NULL,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,2),(6,'Limonada','Limonada natural',15.00,NULL,3),(7,'Gaseosa','Bebida carbonatada 400ml',12.00,NULL,3),(8,'Café','Café americano',10.00,NULL,3),(9,'Tres leches','Pastel tres leches',25.00,NULL,4),(10,'Helado','Dos bolas de helado a elegir',20.00,NULL,4);
+INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3);
 /*!40000 ALTER TABLE `producto_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -443,6 +442,7 @@ CREATE TABLE `reservacion` (
   `idCliente` int NOT NULL,
   `idMesa` int NOT NULL,
   `idEstadoReservacion` int NOT NULL,
+  `motivoCancelacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idReservacion`),
   KEY `fk_reservacion_cliente` (`idCliente`),
   KEY `fk_reservacion_mesa` (`idMesa`),
@@ -460,7 +460,7 @@ CREATE TABLE `reservacion` (
 
 LOCK TABLES `reservacion` WRITE;
 /*!40000 ALTER TABLE `reservacion` DISABLE KEYS */;
-INSERT INTO `reservacion` VALUES (1,'2026-09-25','19:00:00',4,'2026-09-18 21:37:50',1,3,1),(2,'2026-09-28','13:30:00',2,'2026-09-18 21:37:50',2,6,2);
+INSERT INTO `reservacion` VALUES (1,'2026-09-25','19:00:00',4,'2026-09-18 21:37:50',1,3,1,NULL),(2,'2026-09-28','13:30:00',2,'2026-09-18 21:37:50',2,6,2,NULL);
 /*!40000 ALTER TABLE `reservacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +477,7 @@ CREATE TABLE `rol` (
   `descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idRol`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +486,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador','Acceso total al sistema'),(2,'Mesero','Atiende mesas y toma pedidos'),(3,'Cocina','Prepara los pedidos'),(4,'Cliente','Usuario cliente del restaurante');
+INSERT INTO `rol` VALUES (1,'Administrador','Acceso total al sistema'),(2,'Mesero','Atiende mesas y toma pedidos'),(3,'Cocina','Prepara los pedidos'),(4,'Cliente','Usuario cliente del restaurante'),(5,'Recepcionista','Registra clientes y reservaciones'),(6,'Cajero','Registra pagos y genera la cuenta');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,7 +508,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email` (`email`),
   KEY `fk_usuario_rol` (`idRol`),
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -517,7 +517,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Daniel Marroquín','admin@restaurante.com','hash_admin_123','2026-09-18 21:37:50',1),(2,'Carlos Méndez','carlos.mesero@restaurante.com','hash_mesero_123','2026-09-18 21:37:50',2),(3,'Ana López','ana.cocina@restaurante.com','hash_cocina_123','2026-09-18 21:37:50',3),(4,'María Pérez','maria.perez@gmail.com','hash_cliente_123','2026-09-18 21:37:50',4),(5,'José García','jose.garcia@gmail.com','hash_cliente_456','2026-09-18 21:37:50',4);
+INSERT INTO `usuario` VALUES (1,'Administrador del Sistema','admin@restaurante.com','admin123','2026-09-18 21:37:50',1),(2,'Carlos Daniel Marroquín Oliva','carlos.mesero@restaurante.com','mesero123','2026-09-18 21:37:50',2),(3,'Daniel Alexander González Lázaro','daniel.cocina@restaurante.com','cocina123','2026-09-18 21:37:50',3),(4,'María Pérez','maria.perez@gmail.com','cliente123','2026-09-18 21:37:50',4),(5,'José García','jose.garcia@gmail.com','cliente123','2026-09-18 21:37:50',4),(6,'Donovan André Milián Álvarez','donovan.recepcion@restaurante.com','recepcion123','2026-10-13 22:18:20',5),(7,'Víctor Geovanni Méndez García','victor.cajero@restaurante.com','cajero123','2026-10-13 22:18:20',6);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -530,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-18 21:46:00
+-- Dump completed on 2026-10-14 12:56:56

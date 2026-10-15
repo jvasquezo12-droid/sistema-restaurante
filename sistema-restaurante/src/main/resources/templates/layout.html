@@ -21,32 +21,52 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Encabezado -->
-    <header class="bg-dark text-white py-3">
-        <div class="container">
-            <h1 class="h4 mb-0">Sistema Restaurante</h1>
+<!-- Encabezado -->
+<header class="bg-dark text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="h4 mb-0">Sistema Restaurante</h1>
+
+        <!-- Usuario conectado y boton de salir -->
+        <div class="d-flex align-items-center gap-3" th:if="${session.usuario != null}">
+                <span class="small">
+                    <span th:text="${session.nombreUsuario}">Usuario</span>
+                    <span class="text-white-50">(<span th:text="${session.rol}">Rol</span>)</span>
+                </span>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/logout}">Cerrar sesión</a>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- Menu -->
-    <nav class="navbar navbar-expand navbar-light bg-light border-bottom">
-        <div class="container">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" th:href="@{/categorias}">Categorías</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/productos}">Productos</a></li>
-            </ul>
-        </div>
-    </nav>
+<!-- Menu. Cada opcion se muestra segun el rol del usuario -->
+<nav class="navbar navbar-expand navbar-light bg-light border-bottom">
+    <div class="container">
+        <ul class="navbar-nav">
 
-    <!-- Contenido de cada pantalla -->
-    <main class="container my-4 flex-grow-1">
-        <th:block th:replace="${contenido}">Contenido</th:block>
-    </main>
+            <li class="nav-item" th:if="${session.rol == 'Administrador'}">
+                <a class="nav-link" th:href="@{/categorias}">Categorías</a>
+            </li>
 
-    <!-- Pie de pagina -->
-    <footer class="bg-dark text-white-50 text-center py-3 mt-auto">
-        <small>Sistema Restaurante &copy; 2026</small>
-    </footer>
+            <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Cocina'}">
+                <a class="nav-link" th:href="@{/productos}">Productos</a>
+            </li>
+
+            <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Mesero' or session.rol == 'Recepcionista'}">
+                <a class="nav-link" th:href="@{/mesas}">Mesas</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<!-- Contenido de cada pantalla -->
+<main class="container my-4 flex-grow-1">
+    <th:block th:replace="${contenido}">Contenido</th:block>
+</main>
+
+<!-- Pie de pagina -->
+<footer class="bg-dark text-white-50 text-center py-3 mt-auto">
+    <small>Sistema Restaurante &copy; 2026</small>
+</footer>
 
 </body>
 </html>
