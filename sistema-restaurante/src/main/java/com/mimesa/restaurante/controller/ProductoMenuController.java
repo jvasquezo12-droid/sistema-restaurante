@@ -23,8 +23,10 @@ public class ProductoMenuController {
     private CategoriaMenuService categoriaService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("productos", productoService.listarTodos());
+    public String listar(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
+        model.addAttribute("productos", productoService.buscarPorCategoria(categoriaId));
+        model.addAttribute("categorias", categoriaService.listarTodos());
+        model.addAttribute("categoriaSeleccionada", categoriaId);
         return "productos/lista";
     }
 

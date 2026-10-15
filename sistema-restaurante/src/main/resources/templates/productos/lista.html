@@ -9,10 +9,39 @@
 <div class="container mt-4">
 
     <h2 class="mb-4">Productos del menú</h2>
+
+    <!-- Mensajes de éxito y error -->
     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+    <!-- Formulario de Filtro por Categoría -->
+    <div class="card mb-4 bg-light">
+        <div class="card-body">
+            <form th:action="@{/productos}" method="get" class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="categoriaId" class="col-form-label fw-bold">Filtrar por Categoría:</label>
+                </div>
+                <div class="col-md-4">
+                    <select id="categoriaId" name="categoriaId" class="form-select" onchange="this.form.submit()">
+                        <option value="">-- Todas las Categorías --</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.idCategoria}"
+                                th:text="${cat.nombre}"
+                                th:selected="${cat.idCategoria == categoriaSeleccionada}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/productos}" class="btn btn-outline-secondary">Limpiar filtro</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Botón Nuevo Producto -->
     <a th:href="@{/productos/nuevo}" class="btn btn-primary mb-3">Nuevo producto</a>
 
+    <!-- Tabla de Productos -->
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
         <tr>
@@ -28,14 +57,17 @@
             <td th:text="${p.nombre}"></td>
             <td th:text="${p.descripcion}"></td>
             <td th:text="${p.precio}"></td>
-            <td th:text="${p.categoria.nombre}"></td>
+            <td th:text="${p.categoria != null ? p.categoria.nombre : 'Sin Categoría'}"></td>
             <td>
                 <a th:href="@{/productos/editar/{id}(id=${p.idProducto})}"
                    class="btn btn-sm btn-warning">Editar</a>
                 <a th:href="@{/productos/eliminar/{id}(id=${p.idProducto})}"
                    class="btn btn-sm btn-danger"
-                   onclick="return confirm('Esta seguro de eliminar este producto?')">Eliminar</a>
+                   onclick="return confirm('¿Está seguro de eliminar este producto?')">Eliminar</a>
             </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(productos)}">
+            <td colspan="5" class="text-center text-muted">No se encontraron productos para esta categoría.</td>
         </tr>
         </tbody>
     </table>
