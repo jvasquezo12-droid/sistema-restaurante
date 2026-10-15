@@ -7,14 +7,72 @@
 <body>
 <section>
 
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
         <h1>Sistema Web de Restaurante</h1>
         <p class="text-muted">Reservaciones, Pedidos y Facturación</p>
-        <p class="text-muted">Proyecto Final de Programación II — Universidad Mariano Gálvez</p>
         <p class="mt-4">
             Bienvenido, <strong th:text="${session.nombreUsuario}">Usuario</strong>.
             Su rol es <strong th:text="${session.rol}">Rol</strong>.
         </p>
+    </div>
+
+    <!-- Panel de indicadores. Los numeros vienen del IndicadoresDTO -->
+    <div class="row g-3 mb-5">
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0" th:text="${indicadores.totalProductos}">0</div>
+                    <small class="text-muted">Productos</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0 text-success" th:text="${indicadores.productosDisponibles}">0</div>
+                    <small class="text-muted">Disponibles</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0" th:text="${indicadores.totalCategorias}">0</div>
+                    <small class="text-muted">Categorías</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0" th:text="${indicadores.totalMesas}">0</div>
+                    <small class="text-muted">Mesas</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0 text-success" th:text="${indicadores.mesasDisponibles}">0</div>
+                    <small class="text-muted">Mesas libres</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="h3 mb-0" th:text="${indicadores.totalUsuarios}">0</div>
+                    <small class="text-muted">Usuarios</small>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row justify-content-center">
