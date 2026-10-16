@@ -8,7 +8,7 @@
 <section>
 
     <div class="text-center mb-4">
-        <h1>Sistema Web de Restaurante</h1>
+        <h1>Restaurante MiMesa</h1>
         <p class="text-muted">Reservaciones, Pedidos y Facturación</p>
         <p class="mt-4">
             Bienvenido, <strong th:text="${session.nombreUsuario}">Usuario</strong>.
@@ -126,6 +126,19 @@
                         Registro de los clientes del restaurante con sus datos de contacto.
                     </p>
                     <a th:href="@{/clientes}" class="btn btn-primary">Ingresar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solo el administrador consulta los reportes -->
+        <div class="col-md-4 mb-4" th:if="${session.rol == 'Administrador'}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Reportes</h5>
+                    <p class="card-text text-muted">
+                        Consulta de reportes del restaurante con los datos registrados en el sistema.
+                    </p>
+                    <a th:href="@{/reportes}" class="btn btn-primary">Ingresar</a>
                 </div>
             </div>
         </div>
