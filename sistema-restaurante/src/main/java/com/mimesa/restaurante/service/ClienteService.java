@@ -95,8 +95,7 @@ public class ClienteService {
 
     // Devuelve true si otro usuario distinto ya usa ese correo
     public boolean correoEnUso(String email, Integer idUsuarioActual) {
-        return usuarioRepositorio.findByEmail(email.trim())
-                .map(u -> !u.getIdUsuario().equals(idUsuarioActual))
-                .orElse(false);
+        Usuario existente = usuarioRepositorio.findByEmail(email.trim());
+        return existente != null && !existente.getIdUsuario().equals(idUsuarioActual);
     }
 }

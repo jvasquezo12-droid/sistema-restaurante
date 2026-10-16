@@ -25,7 +25,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Encabezado y menu -->
-    <header class="site-header navbar navbar-expand-md">
+    <header class="site-header navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">
                 <span>Sistema Restaurante
@@ -38,12 +38,37 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <nav class="collapse navbar-collapse justify-content-end" id="menuPrincipal">
+
+                <!-- Menu. Cada opcion se muestra segun el rol del usuario -->
                 <ul class="navbar-nav site-nav">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/categorias}">Categorías</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/productos}">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/mesas}">Mesas</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/clientes}">Clientes</a></li>
+
+                    <li class="nav-item" th:if="${session.rol == 'Administrador'}">
+                        <a class="nav-link" th:href="@{/categorias}">Categorías</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Cocina'}">
+                        <a class="nav-link" th:href="@{/productos}">Productos</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Mesero' or session.rol == 'Recepcionista'}">
+                        <a class="nav-link" th:href="@{/mesas}">Mesas</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Recepcionista'}">
+                        <a class="nav-link" th:href="@{/clientes}">Clientes</a>
+                    </li>
+
                 </ul>
+
+                <!-- Usuario conectado y boton de salir -->
+                <div class="user-box" th:if="${session.usuario != null}">
+                    <span class="user-name">
+                        <span th:text="${session.nombreUsuario}">Usuario</span>
+                        <small>(<span th:text="${session.rol}">Rol</span>)</small>
+                    </span>
+                    <a class="btn btn-sm btn-outline-light" th:href="@{/logout}">Cerrar sesión</a>
+                </div>
+
             </nav>
         </div>
     </header>

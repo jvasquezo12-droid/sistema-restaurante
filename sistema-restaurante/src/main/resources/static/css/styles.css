@@ -147,6 +147,45 @@ h2::after {
     color: #fff;
 }
 
+/* Usuario conectado y boton de salir */
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.user-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.user-name small {
+    display: block;
+    font-weight: 400;
+    color: var(--dorado);
+}
+
+.user-box .btn-outline-light {
+    --bs-btn-border-color: rgba(255, 255, 255, 0.55);
+    --bs-btn-hover-bg: var(--dorado);
+    --bs-btn-hover-border-color: var(--dorado);
+    --bs-btn-hover-color: var(--carbon);
+}
+
+@media (max-width: 991.98px) {
+    .user-box {
+        margin: 0.75rem 0 0.5rem;
+        padding: 0.75rem 0 0;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+    }
+}
+
 .site-header .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.45);
 }

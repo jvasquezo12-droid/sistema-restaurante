@@ -23,8 +23,10 @@ public class ProductoMenuController {
     private CategoriaMenuService categoriaService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("productos", productoService.listarTodos());
+    public String listar(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
+        model.addAttribute("productos", productoService.buscarPorCategoria(categoriaId));
+        model.addAttribute("categorias", categoriaService.listarTodos());
+        model.addAttribute("categoriaSeleccionada", categoriaId);
         return "productos/lista";
     }
 
@@ -49,6 +51,9 @@ public class ProductoMenuController {
                           BindingResult result,
                           Model model,
                           RedirectAttributes redirect) {
+        if (producto.getCategoria() == null || producto.getCategoria().getIdCategoria() == null) {
+            result.rejectValue("categoria", "error.categoria", "Debe seleccionar una categoria");
+        }
         if (result.hasErrors()) {
             // Se vuelve a cargar la lista de categorías para que el desplegable HTML no aparezca vacío
             model.addAttribute("categorias", categoriaService.listarTodos());
