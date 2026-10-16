@@ -45,4 +45,20 @@ public class ReporteController {
         model.addAttribute("titulo", "Reporte de Ventas por Fecha");
         return "reportes/ventas_por_fecha";
     }
+
+    @GetMapping("/reservaciones-periodo")
+    public String reservacionesPorPeriodo(
+            @RequestParam(value = "fechaInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            Model model) {
+
+        if (fechaInicio == null) fechaInicio = LocalDate.now().minusDays(30);
+        if (fechaFin == null) fechaFin = LocalDate.now();
+
+        model.addAttribute("reservaciones", reporteRepository.obtenerReservacionesPorPeriodo(fechaInicio, fechaFin));
+        model.addAttribute("fechaInicio", fechaInicio);
+        model.addAttribute("fechaFin", fechaFin);
+        model.addAttribute("titulo", "Reporte de Reservaciones por Periodo");
+        return "reportes/reservaciones_periodo";
+    }
 }
