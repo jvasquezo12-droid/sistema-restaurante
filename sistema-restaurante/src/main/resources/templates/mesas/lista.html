@@ -11,6 +11,24 @@
         <a th:href="@{/mesas/nueva}" class="btn btn-primary">Nueva mesa</a>
     </div>
 
+    <!-- Formulario de filtro por estado -->
+    <form th:action="@{/mesas}" method="get" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <select name="estadoId" class="form-select">
+                <option value="">-- Todos los Estados --</option>
+                <option th:each="est : ${estados}"
+                        th:value="${est.idEstadoMesa}"
+                        th:text="${est.nombre}"
+                        th:selected="${param.estadoId != null and param.estadoId[0] == #strings.toString(est.idEstadoMesa)}">
+                </option>
+            </select>
+        </div>
+        <div class="col-md-6 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Filtrar Estado</button>
+            <a th:href="@{/mesas}" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </form>
+
     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
 

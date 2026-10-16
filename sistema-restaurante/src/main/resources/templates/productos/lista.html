@@ -17,17 +17,22 @@
     <div class="card mb-4 bg-light">
         <div class="card-body">
             <form th:action="@{/productos}" method="get" class="row g-3 mb-4">
-                <div class="col-md-5">
-                    <input type="text" name="nombre" th:value="${param.nombre}" class="form-control" placeholder="Buscar por nombre de producto...">
+                <div class="col-md-4">
+                    <input type="text" name="nombre" class="form-control" placeholder="Buscar por nombre..." th:value="${param.nombre}">
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <select name="categoriaId" class="form-select">
                         <option value="">-- Todas las Categorías --</option>
-                        <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}" th:text="${cat.nombre}"></option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.idCategoria}"
+                                th:text="${cat.nombre}"
+                                th:selected="${param.categoriaId != null and param.categoriaId[0] == #strings.toString(cat.idCategoria)}">
+                        </option>
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a th:href="@{/productos}" class="btn btn-secondary">Limpiar</a>
                 </div>
             </form>
 

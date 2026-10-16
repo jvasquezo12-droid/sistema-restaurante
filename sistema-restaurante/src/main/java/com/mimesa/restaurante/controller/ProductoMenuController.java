@@ -1,9 +1,8 @@
 package com.mimesa.restaurante.controller;
 
-import com.mimesa.restaurante.model.CategoriaMenu;
 import com.mimesa.restaurante.model.ProductoMenu;
-import com.mimesa.restaurante.service.CategoriaMenuService;
-import com.mimesa.restaurante.service.ProductoMenuService;
+import com.mimesa.restaurante.repository.CategoriaMenuRepository;
+import com.mimesa.restaurante.repository.ProductoMenuRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProductoMenuController {
 
     @Autowired
-    private ProductoMenuService productoService;
+    private ProductoMenuRepository productoRepository;
 
     @Autowired
-    private CategoriaMenuService categoriaService;
+    private CategoriaMenuRepository categoriaRepository;
 
+    // Listar productos con filtros
     @GetMapping
     public String listarProductos(@RequestParam(value = "categoriaId", required = false) Long categoriaId,
                                   @RequestParam(value = "nombre", required = false) String nombre,
@@ -29,7 +29,7 @@ public class ProductoMenuController {
         if (nombre != null && !nombre.trim().isEmpty()) {
             model.addAttribute("productos", productoRepository.findByNombreContainingIgnoreCase(nombre));
         } else if (categoriaId != null) {
-            model.addAttribute("productos", productoRepository.findByCategoriaIdCategoria(categoriaId));
+            model.addAttribute("productos", productoRepository.findByCategoria_IdCategoria(categoriaId));
         } else {
             model.addAttribute("productos", productoRepository.findAll());
         }
@@ -37,49 +37,47 @@ public class ProductoMenuController {
         return "productos/lista";
     }
 
+    // Formulario para nuevo producto (Resuelve el 404)
     @GetMapping("/nuevo")
     public String formularioNuevo(Model model) {
-        ProductoMenu producto = new ProductoMenu();
-        producto.setCategoria(new CategoriaMenu());
-        model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categoriaService.listarTodos());
+        model.addAttribute("producto", new ProductoMenu());
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "productos/formulario";
     }
 
-    @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Integer id, Model model) {
-        model.addAttribute("producto", productoService.buscarPorId(id));
-        model.addAttribute("categorias", categoriaService.listarTodos());
-        return "productos/formulario";
-    }
-
+    // Guardar o actualizar producto con validaciones
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("producto") ProductoMenu producto,
-                          BindingResult result,
-                          Model model,
-                          RedirectAttributes redirect) {
-        if (producto.getCategoria() == null || producto.getCategoria().getIdCategoria() == null) {
-            result.rejectValue("categoria", "error.categoria", "Debe seleccionar una categoria");
-        }
+    public String guardarProducto(@Valid @ModelAttribute("producto") ProductoMenu producto,
+                                  BindingResult result,
+                                  Model model,
+                                  RedirectAttributes redirect) {
         if (result.hasErrors()) {
-            // Se vuelve a cargar la lista de categorías para que el desplegable HTML no aparezca vacío
-            model.addAttribute("categorias", categoriaService.listarTodos());
+            model.addAttribute("categorias", categoriaRepository.findAll());
             return "productos/formulario";
         }
-        productoService.guardar(producto);
-        redirect.addFlashAttribute("exito", "Producto guardado correctamente");
+        productoRepository.save(producto);
+        redirect.addFlashAttribute("exito", "Producto guardado correctamente.");
         return "redirect:/productos";
     }
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Integer id, RedirectAttributes redirect) {
-        try {
-            productoService.eliminar(id);
-            redirect.addFlashAttribute("exito", "Producto eliminado correctamente");
-        } catch (Exception e) {
-            redirect.addFlashAttribute("error",
-                    "No se puede eliminar este producto porque ya esta siendo usado en pedidos");
+    // Formulario para editar producto
+    @GetMapping("/editar/{id}")
+    public String formularioEditar(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
+        ProductoMenu producto = productoRepository.findById(id).orElse(null);
+        if (producto == null) {
+            redirect.addFlashAttribute("error", "El producto no existe.");
+            return "redirect:/productos";
         }
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        return "productos/formulario";
+    }
+
+    // Eliminar producto
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable("id") Long id, RedirectAttributes redirect) {
+        productoRepository.deleteById(id);
+        redirect.addFlashAttribute("exito", "Producto eliminado correctamente.");
         return "redirect:/productos";
     }
 }

@@ -11,25 +11,21 @@ import java.util.List;
 public class ProductoMenuService {
 
     @Autowired
-    private ProductoMenuRepository productoMenuRepository;
+    private ProductoMenuRepository repositorio;
 
     public List<ProductoMenu> listarTodos() {
-        return productoMenuRepository.findAll();
+        return repositorio.findAll();
     }
 
-    public ProductoMenu buscarPorId(Integer id) {
-        return productoMenuRepository.findById(id).orElse(null);
+    public ProductoMenu buscarPorId(Long id) {
+        return repositorio.findById(id).orElse(null);
     }
 
     public ProductoMenu guardar(ProductoMenu producto) {
-        return productoMenuRepository.save(producto);
+        return repositorio.save(producto);
     }
 
-    public void eliminar(Integer id) {
-        productoMenuRepository.deleteById(id);
-    }
-
-    public List<ProductoMenu> buscarPorCategoria(Integer categoriaId) {
-        return productoMenuRepository.buscarPorCategoria(categoriaId);
+    public void eliminar(Long id) {
+        repositorio.deleteById(id);
     }
 }
