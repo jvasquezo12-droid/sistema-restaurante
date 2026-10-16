@@ -23,10 +23,17 @@ public class ProductoMenuController {
     private CategoriaMenuService categoriaService;
 
     @GetMapping
-    public String listar(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
-        model.addAttribute("productos", productoService.buscarPorCategoria(categoriaId));
-        model.addAttribute("categorias", categoriaService.listarTodos());
-        model.addAttribute("categoriaSeleccionada", categoriaId);
+    public String listarProductos(@RequestParam(value = "categoriaId", required = false) Long categoriaId,
+                                  @RequestParam(value = "nombre", required = false) String nombre,
+                                  Model model) {
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            model.addAttribute("productos", productoRepository.findByNombreContainingIgnoreCase(nombre));
+        } else if (categoriaId != null) {
+            model.addAttribute("productos", productoRepository.findByCategoriaIdCategoria(categoriaId));
+        } else {
+            model.addAttribute("productos", productoRepository.findAll());
+        }
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "productos/lista";
     }
 
