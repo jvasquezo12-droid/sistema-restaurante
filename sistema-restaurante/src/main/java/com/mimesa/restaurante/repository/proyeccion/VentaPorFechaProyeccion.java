@@ -4,6 +4,6 @@ import java.time.LocalDate;
 
 public interface VentaPorFechaProyeccion {
     LocalDate getFecha();
-    Integer getCantidadPedidos();
+    Long getCantidadPedidos();
     Double getTotalVentas();
 }

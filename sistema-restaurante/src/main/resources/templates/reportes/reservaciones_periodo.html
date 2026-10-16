@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Reservaciones por Periodo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            .table-dark {
+                color: #000 !important;
+                background-color: #fff !important;
+            }
+        }
+    </style>
+</head>
+<body class="container mt-4">
+
+<!-- Encabezado y Botones de Acción -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Reporte de Reservaciones por Periodo</h2>
+    <div class="no-print">
+        <button onclick="window.print()" class="btn btn-secondary me-2">
+            Imprimir
+        </button>
+        <a href="/reportes" class="btn btn-outline-primary">Volver a Reportes</a>
+    </div>
+</div>
+
+<!-- Formulario de Filtro por Rango de Fechas -->
+<form method="get" th:action="@{/reportes/reservaciones-periodo}" class="row g-3 mb-4 no-print align-items-end">
+    <div class="col-auto">
+        <label for="fechaInicio" class="form-label fw-bold">Fecha Inicio:</label>
+        <input type="date" id="fechaInicio" name="fechaInicio" th:value="${fechaInicio}" class="form-control" required>
+    </div>
+    <div class="col-auto">
+        <label for="fechaFin" class="form-label fw-bold">Fecha Fin:</label>
+        <input type="date" id="fechaFin" name="fechaFin" th:value="${fechaFin}" class="form-control" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+<!-- Tabla del Reporte -->
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+    <tr>
+        <th>#</th>
+        <th>Fecha de Reservación</th>
+        <th>Total de Reservaciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="r, iter : ${reporte}">
+        <td th:text="${iter.count}">1</td>
+        <td th:text="${r.fechaReservacion}">2026-10-15</td>
+        <td th:text="${r.totalReservaciones}">0</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(reporte)}">
+        <td colspan="3" class="text-center text-muted">No se encontraron reservaciones para el periodo seleccionado.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
