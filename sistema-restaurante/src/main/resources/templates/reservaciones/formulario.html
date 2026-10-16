@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Reservación</title>
+</head>
+<body>
+<section>
+    <div class="page-header">
+        <h2 th:text="${reservacion.idReservacion == null} ? 'Nueva reservación' : 'Editar reservación'">Reservación</h2>
+    </div>
+
+    <form th:action="@{/reservaciones/guardar}" th:object="${reservacion}" method="post">
+        <input type="hidden" th:field="*{idReservacion}">
+
+        <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <select id="cliente" class="form-select" th:field="*{cliente.idCliente}">
+                <option value="">-- Seleccione un cliente --</option>
+                <option th:each="c : ${clientes}"
+                        th:value="${c.idCliente}"
+                        th:text="${c.usuario.nombre}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="mesa" class="form-label">Mesa</label>
+            <select id="mesa" class="form-select" th:field="*{mesa.idMesa}">
+                <option value="">-- Seleccione una mesa --</option>
+                <option th:each="m : ${mesas}"
+                        th:value="${m.idMesa}"
+                        th:text="'Mesa ' + ${m.numero} + ' (' + ${m.capacidad} + ' personas, ' + ${m.loc} + ')'"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('mesa')}" th:errors="*{mesa}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" id="fecha" class="form-control" th:field="*{fecha}">
+                <div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="hora" class="form-label">Hora</label>
+                <input type="time" id="hora" class="form-control" th:field="*{hora}">
+                <div class="text-danger" th:if="${#fields.hasErrors('hora')}" th:errors="*{hora}"></div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="personas" class="form-label">Personas</label>
+                <input type="number" id="personas" class="form-control" th:field="*{personas}" min="1">
+                <div class="text-danger" th:if="${#fields.hasErrors('personas')}" th:errors="*{personas}"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select id="estado" class="form-select" th:field="*{estado.idEstadoReservacion}">
+                <option value="">-- Seleccione el estado --</option>
+                <option th:each="e : ${estados}"
+                        th:value="${e.idEstadoReservacion}"
+                        th:text="${e.nombre}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="motivoCancelacion" class="form-label">Motivo de la cancelación</label>
+            <textarea id="motivoCancelacion" class="form-control" rows="2"
+                      th:field="*{motivoCancelacion}" maxlength="255"></textarea>
+            <div class="form-text">Se debe llenar únicamente cuando el estado es Cancelada.</div>
+            <div class="text-danger" th:if="${#fields.hasErrors('motivoCancelacion')}" th:errors="*{motivoCancelacion}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/reservaciones}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</section>
+</body>
+</html>

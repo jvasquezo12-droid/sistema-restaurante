@@ -130,6 +130,19 @@
             </div>
         </div>
 
+        <!-- El administrador y la recepcionista manejan las reservaciones -->
+        <div class="col-md-4 mb-4" th:if="${session.rol == 'Administrador' or session.rol == 'Recepcionista'}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Reservaciones</h5>
+                    <p class="card-text text-muted">
+                        Asignación de mesas a los clientes para una fecha y hora determinadas.
+                    </p>
+                    <a th:href="@{/reservaciones}" class="btn btn-primary">Ingresar</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Solo el administrador consulta los reportes -->
         <div class="col-md-4 mb-4" th:if="${session.rol == 'Administrador'}">
             <div class="card h-100 shadow-sm">

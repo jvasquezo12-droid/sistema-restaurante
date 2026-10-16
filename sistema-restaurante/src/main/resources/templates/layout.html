@@ -62,6 +62,10 @@
                         <a class="nav-link" th:href="@{/reportes}">Reportes</a>
                     </li>
 
+                    <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Recepcionista'}">
+                        <a class="nav-link" th:href="@{/reservaciones}">Reservaciones</a>
+                    </li>
+
                 </ul>
 
                 <!-- Usuario conectado y boton de salir -->

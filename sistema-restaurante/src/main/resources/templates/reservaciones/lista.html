@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Reservaciones</title>
+</head>
+<body>
+<section>
+    <div class="page-header">
+        <h2>Reservaciones</h2>
+        <a th:href="@{/reservaciones/nueva}" class="btn btn-primary">Nueva reservación</a>
+    </div>
+
+    <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="@{/reservaciones}" method="get" class="row g-2 align-items-center mb-4">
+        <div class="col-md-4">
+            <select name="estadoId" class="form-select">
+                <option value="">-- Todos los Estados --</option>
+                <option th:each="e : ${estados}"
+                        th:value="${e.idEstadoReservacion}"
+                        th:text="${e.nombre}"
+                        th:selected="${e.idEstadoReservacion == estadoSeleccionado}">
+                </option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filtrar Estado</button>
+        </div>
+        <div class="col-auto">
+            <a th:href="@{/reservaciones}" class="btn btn-outline-secondary">Limpiar</a>
+        </div>
+    </form>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Mesa</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Personas</th>
+            <th>Estado</th>
+            <th>Motivo de cancelación</th>
+            <th class="text-end">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${reservaciones}">
+            <td th:text="${r.cliente.usuario.nombre}"></td>
+            <td th:text="${r.mesa.numero}"></td>
+            <td th:text="${#temporals.format(r.fecha, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(r.hora, 'HH:mm')}"></td>
+            <td th:text="${r.personas}"></td>
+            <td th:text="${r.estado.nombre}"></td>
+            <td th:text="${r.motivoCancelacion}"></td>
+            <td class="text-end">
+                <a th:href="@{/reservaciones/editar/{id}(id=${r.idReservacion})}"
+                   class="btn btn-sm btn-warning">Editar</a>
+                <a th:href="@{/reservaciones/eliminar/{id}(id=${r.idReservacion})}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('¿Eliminar esta reservación?')">Eliminar</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reservaciones)}">
+            <td colspan="8" class="text-center text-muted">No hay reservaciones registradas.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
