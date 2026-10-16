@@ -26,7 +26,6 @@ public class ReporteController {
     @GetMapping("/productos-mas-vendidos")
     public String productosMasVendidos(Model model) {
         model.addAttribute("reporte", reporteRepository.obtenerProductosMasVendidos());
-        model.addAttribute("titulo", "Reporte de Productos Más Vendidos");
         return "reportes/productos_mas_vendidos";
     }
 
@@ -42,7 +41,6 @@ public class ReporteController {
         model.addAttribute("ventas", reporteRepository.obtenerVentasPorFecha(fechaInicio, fechaFin));
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
-        model.addAttribute("titulo", "Reporte de Ventas por Fecha");
         return "reportes/ventas_por_fecha";
     }
 
@@ -58,7 +56,6 @@ public class ReporteController {
         model.addAttribute("reservaciones", reporteRepository.obtenerReservacionesPorPeriodo(fechaInicio, fechaFin));
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
-        model.addAttribute("titulo", "Reporte de Reservaciones por Periodo");
         return "reportes/reservaciones_periodo";
     }
 }
