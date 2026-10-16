@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Cliente</title>
+</head>
+<body>
+<section>
+    <div class="page-header">
+        <h2 th:text="${cliente.idCliente == null} ? 'Nuevo cliente' : 'Editar cliente'">Cliente</h2>
+    </div>
+
+    <form th:action="@{/clientes/guardar}" th:object="${cliente}" method="post">
+        <!-- Si trae id es edicion; si viene vacio es creacion -->
+        <input type="hidden" th:field="*{idCliente}">
+        <input type="hidden" th:field="*{idUsuario}">
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" class="form-control" th:field="*{nombre}" maxlength="150">
+            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo</label>
+            <input type="email" id="email" class="form-control" th:field="*{email}" maxlength="150">
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" id="telefono" class="form-control" th:field="*{telefono}" maxlength="30">
+            <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="adress" class="form-label">Dirección</label>
+            <input type="text" id="adress" class="form-control" th:field="*{adress}" maxlength="255">
+            <div class="text-danger" th:if="${#fields.hasErrors('adress')}" th:errors="*{adress}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/clientes}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</section>
+</body>
+</html>

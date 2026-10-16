@@ -1,0 +1,398 @@
+/* ==========================================================
+   Sistema Restaurante - hoja de estilos propia
+   Se carga despues de Bootstrap y le cambia los colores,
+   las letras y los detalles para darle identidad al sistema.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;700&display=swap');
+
+/* ---------- Paleta y variables ---------- */
+:root {
+    --vino: #7b1e2b;
+    --vino-oscuro: #5a1520;
+    --vino-claro: #f6e9eb;
+    --dorado: #c9a24d;
+    --dorado-oscuro: #a9832f;
+    --crema: #faf6ef;
+    --carbon: #2b2523;
+    --gris-calido: #7a706a;
+    --borde: #e7dfd1;
+
+    --fuente-titulos: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --fuente-texto: 'Lato', 'Segoe UI', Roboto, Arial, sans-serif;
+
+    --radio: 12px;
+    --sombra: 0 2px 10px rgba(43, 37, 35, 0.08);
+    --sombra-fuerte: 0 8px 24px rgba(43, 37, 35, 0.14);
+
+    /* Hace que los componentes de Bootstrap tomen nuestros colores */
+    --bs-body-font-family: var(--fuente-texto);
+    --bs-body-color: var(--carbon);
+    --bs-body-bg: var(--crema);
+    --bs-link-color: var(--vino);
+    --bs-link-hover-color: var(--vino-oscuro);
+    --bs-border-color: var(--borde);
+}
+
+/* ---------- Base ---------- */
+body {
+    background-color: var(--crema);
+    color: var(--carbon);
+    font-family: var(--fuente-texto);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+h2 {
+    position: relative;
+    padding-bottom: 0.7rem;
+    margin-bottom: 1.25rem;
+    color: var(--vino-oscuro);
+}
+
+/* Linea dorada debajo de los titulos de cada pantalla */
+h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 56px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--dorado);
+}
+
+.text-muted {
+    color: var(--gris-calido) !important;
+}
+
+/* ---------- Barra superior ---------- */
+.site-header,
+.navbar.bg-dark {
+    background: linear-gradient(135deg, var(--vino-oscuro) 0%, var(--vino) 100%) !important;
+    border-bottom: 3px solid var(--dorado);
+    box-shadow: var(--sombra);
+}
+
+.site-header {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
+
+.site-header .navbar-brand,
+.navbar.bg-dark .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    font-size: 1.35rem;
+}
+
+.site-header .navbar-brand::before,
+.navbar.bg-dark .navbar-brand::before {
+    content: '\2726'; /* estrella decorativa */
+    color: var(--dorado);
+    font-size: 1.1rem;
+}
+
+.brand-sub {
+    display: block;
+    margin-top: -2px;
+    font-family: var(--fuente-texto);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.site-nav .nav-link {
+    position: relative;
+    padding: 0.55rem 1rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    transition: color 0.2s ease;
+}
+
+.site-nav .nav-link:hover {
+    color: var(--dorado);
+}
+
+.site-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 2px;
+    height: 2px;
+    background: var(--dorado);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+}
+
+.site-nav .nav-link:hover::after,
+.site-nav .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.site-nav .nav-link.active {
+    color: #fff;
+}
+
+.site-header .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+.site-header .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ---------- Pie de pagina ---------- */
+.site-footer {
+    background: var(--carbon);
+    color: rgba(255, 255, 255, 0.6);
+    border-top: 3px solid var(--dorado);
+    padding: 1.1rem 0;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.site-footer strong {
+    color: var(--dorado);
+    font-weight: 700;
+}
+
+/* ---------- Encabezado de cada pantalla ---------- */
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.page-header h2 {
+    margin-bottom: 1.25rem;
+}
+
+.page-header .btn {
+    margin-bottom: 1.25rem;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+    border-radius: 8px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(201, 162, 77, 0.4);
+}
+
+/* Principal y Guardar: vino */
+.btn-primary,
+.btn-success {
+    --bs-btn-bg: var(--vino);
+    --bs-btn-border-color: var(--vino);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-bg: var(--vino-oscuro);
+    --bs-btn-hover-border-color: var(--vino-oscuro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--vino-oscuro);
+    --bs-btn-active-border-color: var(--vino-oscuro);
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-bg: var(--vino);
+    --bs-btn-disabled-border-color: var(--vino);
+    box-shadow: 0 2px 6px rgba(123, 30, 43, 0.25);
+}
+
+/* Editar: dorado */
+.btn-warning {
+    --bs-btn-bg: var(--dorado);
+    --bs-btn-border-color: var(--dorado);
+    --bs-btn-color: #2b2523;
+    --bs-btn-hover-bg: var(--dorado-oscuro);
+    --bs-btn-hover-border-color: var(--dorado-oscuro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--dorado-oscuro);
+    --bs-btn-active-border-color: var(--dorado-oscuro);
+    --bs-btn-active-color: #fff;
+}
+
+/* Eliminar: rojo apagado para que no choque con el vino */
+.btn-danger {
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: #b3392f;
+    --bs-btn-color: #b3392f;
+    --bs-btn-hover-bg: #b3392f;
+    --bs-btn-hover-border-color: #b3392f;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: #8f2c24;
+    --bs-btn-active-border-color: #8f2c24;
+    --bs-btn-active-color: #fff;
+}
+
+/* Cancelar: neutro */
+.btn-secondary {
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--borde);
+    --bs-btn-color: var(--gris-calido);
+    --bs-btn-hover-bg: var(--vino-claro);
+    --bs-btn-hover-border-color: var(--vino);
+    --bs-btn-hover-color: var(--vino);
+    --bs-btn-active-bg: var(--vino-claro);
+    --bs-btn-active-border-color: var(--vino);
+    --bs-btn-active-color: var(--vino);
+}
+
+/* ---------- Tablas ---------- */
+.table {
+    --bs-table-bg: #fff;
+    --bs-table-striped-bg: #fbf7f0;
+    --bs-table-hover-bg: #f6ecd8;
+    --bs-table-border-color: var(--borde);
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.table thead.table-dark th,
+.table thead th {
+    background-color: var(--vino);
+    color: #fff;
+    border-color: var(--vino-oscuro);
+    border-bottom: 3px solid var(--dorado);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 0.9rem 1rem;
+}
+
+.table thead th:first-child {
+    border-top-left-radius: calc(var(--radio) - 1px);
+}
+
+.table thead th:last-child {
+    border-top-right-radius: calc(var(--radio) - 1px);
+}
+
+.table tbody td {
+    padding: 0.8rem 1rem;
+    border-color: var(--borde);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+/* ---------- Formularios ---------- */
+form[method="post"] {
+    max-width: 640px;
+    padding: 1.75rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-top: 4px solid var(--vino);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.form-label {
+    margin-bottom: 0.35rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--vino-oscuro);
+}
+
+.form-control,
+.form-select {
+    border-color: var(--borde);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    background-color: #fffdf9;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--dorado);
+    box-shadow: 0 0 0 0.25rem rgba(201, 162, 77, 0.25);
+    background-color: #fff;
+}
+
+.text-danger {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: #b3392f !important;
+}
+
+/* ---------- Alertas ---------- */
+.alert {
+    border: 0;
+    border-left: 5px solid;
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+}
+
+.alert-success {
+    background: #eef6ec;
+    border-left-color: #4f8a45;
+    color: #2f5a28;
+}
+
+.alert-danger {
+    background: #fbeceb;
+    border-left-color: #b3392f;
+    color: #7e2620;
+}
+
+/* ---------- Tarjetas de la pantalla de inicio ---------- */
+.card {
+    border: 1px solid var(--borde);
+    border-top: 4px solid var(--dorado);
+    border-radius: var(--radio);
+    background: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-fuerte) !important;
+}
+
+.card-title {
+    color: var(--vino-oscuro);
+}
+
+/* ---------- Pantallas pequenas ---------- */
+@media (max-width: 768px) {
+    table.table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    form[method="post"] {
+        padding: 1.25rem;
+    }
+}
