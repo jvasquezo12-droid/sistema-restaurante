@@ -29,18 +29,8 @@ CREATE TABLE `categoria_menu` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categoria_menu`
---
-
-LOCK TABLES `categoria_menu` WRITE;
-/*!40000 ALTER TABLE `categoria_menu` DISABLE KEYS */;
-INSERT INTO `categoria_menu` VALUES (1,'Entradas','Platillos para abrir el apetito'),(2,'Platos Fuertes','Platillos principales'),(3,'Bebidas','Bebidas frías y calientes'),(4,'Postres','Dulces para cerrar la comida');
-/*!40000 ALTER TABLE `categoria_menu` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cliente`
@@ -59,18 +49,8 @@ CREATE TABLE `cliente` (
   UNIQUE KEY `uq_cliente_usuario` (`idUsuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `chk_cliente_loyalty` CHECK ((`loyalty` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cliente`
---
-
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'50212345678','Zona 10, Ciudad de Guatemala',150,4),(2,'50287654321','Zona 15, Ciudad de Guatemala',40,5);
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `detalle_pedido`
@@ -98,16 +78,6 @@ CREATE TABLE `detalle_pedido` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `detalle_pedido`
---
-
-LOCK TABLES `detalle_pedido` WRITE;
-/*!40000 ALTER TABLE `detalle_pedido` DISABLE KEYS */;
-INSERT INTO `detalle_pedido` VALUES (1,1,35.00,'Extra queso',35.00,1,1),(2,2,12.00,NULL,24.00,1,6),(3,1,85.00,'Término medio',85.00,2,4),(4,1,60.00,NULL,60.00,2,5),(5,2,45.00,NULL,90.00,3,3);
-/*!40000 ALTER TABLE `detalle_pedido` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `estado_mesa`
 --
 
@@ -121,16 +91,6 @@ CREATE TABLE `estado_mesa` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `estado_mesa`
---
-
-LOCK TABLES `estado_mesa` WRITE;
-/*!40000 ALTER TABLE `estado_mesa` DISABLE KEYS */;
-INSERT INTO `estado_mesa` VALUES (1,'Disponible'),(4,'Fuera de servicio'),(2,'Ocupada'),(3,'Reservada');
-/*!40000 ALTER TABLE `estado_mesa` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `estado_pedido`
@@ -148,16 +108,6 @@ CREATE TABLE `estado_pedido` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `estado_pedido`
---
-
-LOCK TABLES `estado_pedido` WRITE;
-/*!40000 ALTER TABLE `estado_pedido` DISABLE KEYS */;
-INSERT INTO `estado_pedido` VALUES (4,'Cancelado'),(2,'En preparación'),(1,'Pendiente'),(3,'Servido');
-/*!40000 ALTER TABLE `estado_pedido` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `estado_reservacion`
 --
 
@@ -171,16 +121,6 @@ CREATE TABLE `estado_reservacion` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `estado_reservacion`
---
-
-LOCK TABLES `estado_reservacion` WRITE;
-/*!40000 ALTER TABLE `estado_reservacion` DISABLE KEYS */;
-INSERT INTO `estado_reservacion` VALUES (3,'Cancelada'),(4,'Completada'),(1,'Confirmada'),(2,'Pendiente');
-/*!40000 ALTER TABLE `estado_reservacion` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `factura`
@@ -204,16 +144,6 @@ CREATE TABLE `factura` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `factura`
---
-
-LOCK TABLES `factura` WRITE;
-/*!40000 ALTER TABLE `factura` DISABLE KEYS */;
-INSERT INTO `factura` VALUES (1,'2026-09-18 21:37:50',59.00,6.32,1),(2,'2026-09-18 21:37:50',145.00,15.54,2);
-/*!40000 ALTER TABLE `factura` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `forma_pago`
 --
 
@@ -227,16 +157,6 @@ CREATE TABLE `forma_pago` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `forma_pago`
---
-
-LOCK TABLES `forma_pago` WRITE;
-/*!40000 ALTER TABLE `forma_pago` DISABLE KEYS */;
-INSERT INTO `forma_pago` VALUES (1,'Efectivo'),(2,'Tarjeta de crédito'),(3,'Tarjeta de débito'),(4,'Transferencia');
-/*!40000 ALTER TABLE `forma_pago` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `mesa`
@@ -260,16 +180,6 @@ CREATE TABLE `mesa` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `mesa`
---
-
-LOCK TABLES `mesa` WRITE;
-/*!40000 ALTER TABLE `mesa` DISABLE KEYS */;
-INSERT INTO `mesa` VALUES (1,1,2,'Terraza',1),(2,2,4,'Terraza',2),(3,3,4,'Salón principal',1),(4,4,6,'Salón principal',3),(5,5,8,'Salón VIP',1),(6,6,2,'Barra',1);
-/*!40000 ALTER TABLE `mesa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pago`
 --
 
@@ -291,16 +201,6 @@ CREATE TABLE `pago` (
   CONSTRAINT `chk_pago_total` CHECK ((`total` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pago`
---
-
-LOCK TABLES `pago` WRITE;
-/*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (1,59.00,'2026-09-18 21:37:50',1,1,NULL),(2,145.00,'2026-09-18 21:37:50',2,2,NULL);
-/*!40000 ALTER TABLE `pago` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pedido`
@@ -329,16 +229,6 @@ CREATE TABLE `pedido` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pedido`
---
-
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (1,'2026-09-18 21:37:50',NULL,'Sin cebolla en los nachos',2,2,3,NULL),(2,'2026-09-18 21:37:50',NULL,'Cliente frecuente, mesa VIP',5,2,2,NULL),(3,'2026-09-18 21:37:50',NULL,'Para llevar',3,2,1,NULL);
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `producto_menu`
 --
 
@@ -357,18 +247,8 @@ CREATE TABLE `producto_menu` (
   KEY `fk_producto_categoria` (`idCategoria`),
   CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categoria_menu` (`idCategoria`),
   CONSTRAINT `chk_producto_precio` CHECK ((`precio` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `producto_menu`
---
-
-LOCK TABLES `producto_menu` WRITE;
-/*!40000 ALTER TABLE `producto_menu` DISABLE KEYS */;
-INSERT INTO `producto_menu` VALUES (1,'Nachos con queso','Totopos bañados en queso fundido',35.00,NULL,1,1),(3,'Pechuga a la plancha','Pechuga de pollo con guarnición',65.00,NULL,1,2),(4,'Lomito al carbón Promoción','Lomito de res a la parrilla',65.00,'',1,2),(5,'Pasta Alfredo','Pasta en salsa alfredo con pollo',60.00,NULL,1,2),(6,'Limonada','Limonada natural',15.00,NULL,1,3);
-/*!40000 ALTER TABLE `producto_menu` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `producto_promocion`
@@ -388,16 +268,6 @@ CREATE TABLE `producto_promocion` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `producto_promocion`
---
-
-LOCK TABLES `producto_promocion` WRITE;
-/*!40000 ALTER TABLE `producto_promocion` DISABLE KEYS */;
-INSERT INTO `producto_promocion` VALUES (1,1),(2,3),(2,4),(3,5),(1,6);
-/*!40000 ALTER TABLE `producto_promocion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `promocion`
 --
 
@@ -415,16 +285,6 @@ CREATE TABLE `promocion` (
   CONSTRAINT `chk_discount` CHECK (((`discountPct` >= 0) and (`discountPct` <= 100)))
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `promocion`
---
-
-LOCK TABLES `promocion` WRITE;
-/*!40000 ALTER TABLE `promocion` DISABLE KEYS */;
-INSERT INTO `promocion` VALUES (1,'BIENVENIDA10','Descuento de bienvenida para nuevos clientes',10.00,'2026-12-31'),(2,'FINDE15','Descuento de fin de semana',15.00,'2026-11-30'),(3,'COMBOFAM','Descuento para combos familiares',20.00,'2026-10-15');
-/*!40000 ALTER TABLE `promocion` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `reservacion`
@@ -455,16 +315,6 @@ CREATE TABLE `reservacion` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reservacion`
---
-
-LOCK TABLES `reservacion` WRITE;
-/*!40000 ALTER TABLE `reservacion` DISABLE KEYS */;
-INSERT INTO `reservacion` VALUES (1,'2026-09-25','19:00:00',4,'2026-09-18 21:37:50',1,3,1,NULL),(2,'2026-09-28','13:30:00',2,'2026-09-18 21:37:50',2,6,2,NULL);
-/*!40000 ALTER TABLE `reservacion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `rol`
 --
 
@@ -479,16 +329,6 @@ CREATE TABLE `rol` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rol`
---
-
-LOCK TABLES `rol` WRITE;
-/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador','Acceso total al sistema'),(2,'Mesero','Atiende mesas y toma pedidos'),(3,'Cocina','Prepara los pedidos'),(4,'Cliente','Usuario cliente del restaurante'),(5,'Recepcionista','Registra clientes y reservaciones'),(6,'Cajero','Registra pagos y genera la cuenta');
-/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -508,18 +348,8 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email` (`email`),
   KEY `fk_usuario_rol` (`idRol`),
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Administrador del Sistema','admin@restaurante.com','admin123','2026-09-18 21:37:50',1),(2,'Carlos Daniel Marroquín Oliva','carlos.mesero@restaurante.com','mesero123','2026-09-18 21:37:50',2),(3,'Daniel Alexander González Lázaro','daniel.cocina@restaurante.com','cocina123','2026-09-18 21:37:50',3),(4,'María Pérez','maria.perez@gmail.com','cliente123','2026-09-18 21:37:50',4),(5,'José García','jose.garcia@gmail.com','cliente123','2026-09-18 21:37:50',4),(6,'Donovan André Milián Álvarez','donovan.recepcion@restaurante.com','recepcion123','2026-10-13 22:18:20',5),(7,'Víctor Geovanni Méndez García','victor.cajero@restaurante.com','cajero123','2026-10-13 22:18:20',6);
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -530,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-14 12:56:56
+-- Dump completed on 2026-10-16 18:10:27
