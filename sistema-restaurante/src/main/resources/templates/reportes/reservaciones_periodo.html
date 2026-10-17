@@ -28,23 +28,39 @@
         </div>
     </form>
 
+    <p class="text-muted">
+        Reservaciones registradas entre el
+        <strong th:text="${#temporals.format(fechaInicio, 'dd/MM/yyyy')}">01/01/2026</strong>
+        y el
+        <strong th:text="${#temporals.format(fechaFin, 'dd/MM/yyyy')}">31/01/2026</strong>.
+    </p>
+
     <table class="table table-bordered table-striped align-middle">
         <thead class="table-dark">
         <tr>
+            <th>#</th>
+            <th>Cliente</th>
             <th>Fecha</th>
-            <th>Total Reservaciones</th>
+            <th>Estado</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="r : ${reservaciones}">
-            <td th:text="${r.fechaReservacion}">2026-10-15</td>
-            <td th:text="${r.totalReservaciones}">0</td>
+            <td th:text="${r.idReservacion}">0</td>
+            <td th:text="${r.nombreCliente}">Cliente</td>
+            <td th:text="${#temporals.format(r.fecha, 'dd/MM/yyyy')}">01/01/2026</td>
+            <td th:text="${r.estado}">Estado</td>
         </tr>
         <tr th:if="${#lists.isEmpty(reservaciones)}">
-            <td colspan="2" class="text-center text-muted">No se encontraron reservaciones en el rango seleccionado.</td>
+            <td colspan="4" class="text-center text-muted">No se encontraron reservaciones en el rango seleccionado.</td>
         </tr>
         </tbody>
     </table>
+
+    <p class="text-muted">
+        Total de reservaciones en el periodo:
+        <strong th:text="${#lists.size(reservaciones)}">0</strong>
+    </p>
 </section>
 </body>
 </html>

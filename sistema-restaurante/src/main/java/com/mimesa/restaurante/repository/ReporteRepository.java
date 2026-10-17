@@ -15,25 +15,41 @@ import java.util.List;
 @Repository
 public interface ReporteRepository extends JpaRepository<ProductoMenu, Integer> {
 
+    // Suma las cantidades y los subtotales del detalle de los pedidos,
+    // agrupando por producto, y devuelve los diez primeros.
     @Query(value = "SELECT p.nombre AS nombreProducto, " +
-            "1 AS cantidadTotal, " +
-            "p.precio AS totalVendido " +
-            "FROM producto_menu p " +
+            "SUM(d.cantidad) AS cantidadTotal, " +
+            "SUM(d.subtotal) AS totalVendido " +
+            "FROM detalle_pedido d " +
+            "JOIN producto_menu p ON p.idProducto = d.idProducto " +
+            "GROUP BY p.idProducto, p.nombre " +
+            "ORDER BY cantidadTotal DESC " +
             "LIMIT 10", nativeQuery = true)
     List<ProductoMasVendidoProyeccion> obtenerProductosMasVendidos();
 
-    @Query(value = "SELECT CURDATE() AS fecha, " +
-            "1 AS cantidadPedidos, " +
-            "100.0 AS totalVentas " +
-            "FROM producto_menu p " +
-            "LIMIT 1", nativeQuery = true)
+    // Agrupa las facturas por dia dentro del rango indicado y suma sus totales.
+    @Query(value = "SELECT DATE(f.fFactura) AS fecha, " +
+            "COUNT(*) AS cantidadPedidos, " +
+            "SUM(f.total) AS totalVentas " +
+            "FROM factura f " +
+            "WHERE DATE(f.fFactura) BETWEEN :fechaInicio AND :fechaFin " +
+            "GROUP BY DATE(f.fFactura) " +
+            "ORDER BY fecha", nativeQuery = true)
     List<VentaPorFechaProyeccion> obtenerVentasPorFecha(@Param("fechaInicio") LocalDate fechaInicio,
                                                         @Param("fechaFin") LocalDate fechaFin);
 
-    @Query(value = "SELECT CURDATE() AS fechaReservacion, " +
-            "1 AS totalReservaciones " +
-            "FROM producto_menu p " +
-            "LIMIT 1", nativeQuery = true)
+    // Lista las reservaciones del rango indicado, con el nombre del cliente
+    // y el estado en que se encuentra cada una.
+    @Query(value = "SELECT r.idReservacion AS idReservacion, " +
+            "u.nombre AS nombreCliente, " +
+            "r.fecha AS fecha, " +
+            "e.nombre AS estado " +
+            "FROM reservacion r " +
+            "JOIN cliente c ON c.idCliente = r.idCliente " +
+            "JOIN usuario u ON u.idUsuario = c.idUsuario " +
+            "JOIN estado_reservacion e ON e.idEstadoReservacion = r.idEstadoReservacion " +
+            "WHERE r.fecha BETWEEN :fechaInicio AND :fechaFin " +
+            "ORDER BY r.fecha", nativeQuery = true)
     List<ReservacionPeriodoProyeccion> obtenerReservacionesPorPeriodo(@Param("fechaInicio") LocalDate fechaInicio,
                                                                       @Param("fechaFin") LocalDate fechaFin);
 }
