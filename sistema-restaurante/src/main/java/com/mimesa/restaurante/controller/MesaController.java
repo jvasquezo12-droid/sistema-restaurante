@@ -4,16 +4,15 @@ import com.mimesa.restaurante.model.EstadoMesa;
 import com.mimesa.restaurante.model.Mesa;
 import com.mimesa.restaurante.repository.EstadoMesaRepository;
 import com.mimesa.restaurante.repository.MesaRepository;
+import com.mimesa.restaurante.service.EstadoMesaService;
+import com.mimesa.restaurante.service.MesaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/mesas")
@@ -25,6 +24,13 @@ public class MesaController {
     @Autowired
     private EstadoMesaRepository estadoMesaRepository;
 
+    @Autowired
+    private MesaService mesaService;
+
+    @Autowired
+    private EstadoMesaService estadoService;
+
+    // Listado con filtro opcional por estado
     @GetMapping
     public String listarMesas(@RequestParam(value = "estadoId", required = false) Integer estadoId, Model model) {
         if (estadoId != null) {
@@ -41,20 +47,20 @@ public class MesaController {
         Mesa mesa = new Mesa();
         mesa.setEstado(new EstadoMesa());
         model.addAttribute("mesa", mesa);
-        model.addAttribute("estados", estadoMesaRepository.findAll());
+        model.addAttribute("estados", estadoService.listarTodos());
         return "mesas/formulario";
     }
 
     @GetMapping("/editar/{id}")
     public String formularioEditar(@PathVariable Integer id, Model model,
                                    RedirectAttributes redirect) {
-        Mesa mesa = mesaRepository.findById(id).orElse(null);
+        Mesa mesa = mesaService.buscarPorId(id);
         if (mesa == null) {
             redirect.addFlashAttribute("error", "La mesa no existe");
             return "redirect:/mesas";
         }
         model.addAttribute("mesa", mesa);
-        model.addAttribute("estados", estadoMesaRepository.findAll());
+        model.addAttribute("estados", estadoService.listarTodos());
         return "mesas/formulario";
     }
 
@@ -63,26 +69,19 @@ public class MesaController {
                           BindingResult result,
                           Model model,
                           RedirectAttributes redirect) {
-
         if (mesa.getEstado() == null || mesa.getEstado().getIdEstadoMesa() == null) {
-            result.rejectValue("estado", "error.estado", "Debe seleccionar el estado de la mesa");
+            result.rejectValue("estado", "estado.requerido", "Seleccione un estado");
         }
-
-        // Regla del negocio: el número de mesa no se puede repetir
-        if (mesa.getNumero() != null) {
-            Optional<Mesa> repetida = mesaRepository.findByNumero(mesa.getNumero());
-            if (repetida.isPresent() && !repetida.get().getIdMesa().equals(mesa.getIdMesa())) {
-                result.rejectValue("numero", "error.numero",
-                        "Ya existe una mesa con el número " + mesa.getNumero());
-            }
+        if (mesa.getNumero() != null && !result.hasFieldErrors("numero")
+                && mesaService.numeroEnUso(mesa.getNumero(), mesa.getIdMesa())) {
+            result.rejectValue("numero", "numero.duplicado", "Ya existe una mesa con ese número");
         }
-
         if (result.hasErrors()) {
-            model.addAttribute("estados", estadoMesaRepository.findAll());
+            // Se vuelve a cargar la lista de estados para que el desplegable no aparezca vacío
+            model.addAttribute("estados", estadoService.listarTodos());
             return "mesas/formulario";
         }
-
-        mesaRepository.save(mesa);
+        mesaService.guardar(mesa);
         redirect.addFlashAttribute("exito", "Mesa guardada correctamente");
         return "redirect:/mesas";
     }
@@ -90,13 +89,11 @@ public class MesaController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, RedirectAttributes redirect) {
         try {
-            mesaRepository.deleteById(id);
+            mesaService.eliminar(id);
             redirect.addFlashAttribute("exito", "Mesa eliminada correctamente");
-        } catch (DataIntegrityViolationException e) {
-            redirect.addFlashAttribute("error",
-                    "No se puede eliminar esta mesa porque tiene reservaciones o pedidos asociados");
         } catch (Exception e) {
-            redirect.addFlashAttribute("error", "Ocurrió un error al intentar eliminar la mesa");
+            redirect.addFlashAttribute("error",
+                    "No se puede eliminar esta mesa porque tiene pedidos o reservaciones asociados");
         }
         return "redirect:/mesas";
     }
