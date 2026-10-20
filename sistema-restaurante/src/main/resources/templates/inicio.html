@@ -158,6 +158,20 @@
 
     </div>
 
+    <!-- El administrador, el mesero y la cocina manejan los pedidos -->
+    <div class="col-md-4 mb-4"
+         th:if="${session.rol == 'Administrador' or session.rol == 'Mesero' or session.rol == 'Cocina'}">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">Pedidos</h5>
+                <p class="card-text text-muted">
+                    Registro de los pedidos de cada mesa con los productos que se ordenaron.
+                </p>
+                <a th:href="@{/pedidos}" class="btn btn-primary">Ingresar</a>
+            </div>
+        </div>
+    </div>
+
 </section>
 </body>
 </html>

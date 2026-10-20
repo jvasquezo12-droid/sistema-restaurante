@@ -66,6 +66,10 @@
                         <a class="nav-link" th:href="@{/reservaciones}">Reservaciones</a>
                     </li>
 
+                    <li class="nav-item" th:if="${session.rol == 'Administrador' or session.rol == 'Mesero' or session.rol == 'Cocina'}">
+                        <a class="nav-link" th:href="@{/pedidos}">Pedidos</a>
+                    </li>
+
                 </ul>
 
                 <!-- Usuario conectado y boton de salir -->

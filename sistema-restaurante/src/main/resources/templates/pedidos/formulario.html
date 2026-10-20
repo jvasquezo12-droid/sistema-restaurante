@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Pedido</title>
+</head>
+<body>
+<section>
+
+    <h2 th:text="${pedido.idPedido} == null ? 'Nuevo pedido' : 'Editar pedido'">Pedido</h2>
+
+    <form method="post" th:action="@{/pedidos/guardar}" th:object="${pedido}">
+        <input type="hidden" th:field="*{idPedido}"/>
+
+        <div class="mb-3">
+            <label class="form-label">Mesa</label>
+            <select class="form-select" th:field="*{mesa.idMesa}"
+                    th:classappend="${#fields.hasErrors('mesa')} ? 'is-invalid' : ''">
+                <option value="">Seleccione una mesa</option>
+                <option th:each="m : ${mesas}"
+                        th:value="${m.idMesa}"
+                        th:text="'Mesa ' + ${m.numero} + ' (' + ${m.capacidad} + ' personas)'"></option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('mesa')}" th:errors="*{mesa}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Atendido por</label>
+            <select class="form-select" th:field="*{usuario.idUsuario}"
+                    th:classappend="${#fields.hasErrors('usuario')} ? 'is-invalid' : ''">
+                <option value="">Seleccione quién atiende</option>
+                <option th:each="u : ${usuarios}"
+                        th:value="${u.idUsuario}"
+                        th:text="${u.nombre}"></option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" th:field="*{estado.idEstadoPedido}"
+                    th:classappend="${#fields.hasErrors('estado')} ? 'is-invalid' : ''">
+                <option value="">Seleccione el estado</option>
+                <option th:each="e : ${estados}"
+                        th:value="${e.idEstadoPedido}"
+                        th:text="${e.nombre}"></option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nota</label>
+            <textarea class="form-control" rows="2" th:field="*{nota}"
+                      th:classappend="${#fields.hasErrors('nota')} ? 'is-invalid' : ''"></textarea>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('nota')}" th:errors="*{nota}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Motivo de la cancelación</label>
+            <input type="text" class="form-control" th:field="*{motivoCancelacion}"
+                   th:classappend="${#fields.hasErrors('motivoCancelacion')} ? 'is-invalid' : ''"/>
+            <div class="form-text">Solo es obligatorio cuando el estado es Cancelado.</div>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('motivoCancelacion')}"
+                 th:errors="*{motivoCancelacion}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a class="btn btn-secondary" th:href="@{/pedidos}">Cancelar</a>
+    </form>
+
+</section>
+</body>
+</html>
